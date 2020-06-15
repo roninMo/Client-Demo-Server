@@ -1,7 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
-const sqlc = require("./db");
 const mysql = require("mysql");
+const sqlc = require("./db");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
