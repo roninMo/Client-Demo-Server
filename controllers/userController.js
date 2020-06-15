@@ -1,7 +1,8 @@
-// Dont forget to use bcrypt, all the other controllers will use Validate session before their req, res arrow function for authentication, but we need this one to encrypt the password. Also connection.end when you're logging out (;
+// Don't forget to connection.end() for when a user signs out 
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+var jwt = require("jsonwebtoken");
 const sqlc = require("../db");
 
 
@@ -41,7 +42,17 @@ router.post("/create", (req, res) => {
           return;
         }
   
-        console.log(`Entered a new user with an id of ` + results.InsertId);
+        const token =  jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+          expiresIn: 60 * 60 * 24,
+        });
+        const user = {
+          id: results.insertId,
+          email: email,
+          password: req.body.password,
+          firstName: firstName,
+          lastName: lastName
+        };
+        res.status(200).json({message: "Created new user", user: user, sessionToken: token});
         res.end();
       }
     );
