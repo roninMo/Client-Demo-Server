@@ -1,0 +1,20 @@
+To create a docker mysql instance
+    - docker run -d -p 3306:3306 — name=insurance-mysql  — env=”MYSQL_ROOT_PASSWORD=Kieran30437" mysql
+
+Function to start all my exited docker containers
+    - docker start $(docker ps -a -q --filter "status=exited");   
+
+To start specific exited docker containers
+    - docker start  `docker ps -q -l` # restart it in the background
+    - docker attach `docker ps -q -l` # reattach the terminal & stdin
+
+Start the mysql container       
+    - docker exec -it insurance-mysql bash  
+
+For the local server to test the routes:
+    - It's ran through a docker container, so google how to create one if you need to recreate it
+    - To open command line in the db: "docker exec -it insurance-mysql bash"
+
+Mysql Commands within the databse:
+    -  Authentication: mysql -u root -p
+    
