@@ -152,7 +152,6 @@ router.put("/:id", (req, res) => {
       query += `${bodyParams[i]}=?, `;
     }
   }
-
   query = query.substr(0, query.length - 2) + ` WHERE id=?`;
   insertedValues.push(req.params.id);
 
@@ -162,7 +161,10 @@ router.put("/:id", (req, res) => {
     } else {
       res
         .status(200)
-        .json({ message: "Successfully updated user", results: results });
+        .json({
+          message: `Successfully updated user with an id of ${req.params.id}`,
+          results: results,
+        });
     }
   });
 });
