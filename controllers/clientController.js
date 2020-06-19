@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const sqlc = require("../db");
-const validateSession = require("../middleware/validateSession");
-const e = require("express");
+const vs = require("../middleware/validateSession");
 
 /****************************
  * Clients
@@ -10,7 +9,7 @@ const e = require("express");
 // Get all Clients
 router.get(
   "/all",
-  /*validateSession,*/ (req, res) => {
+  /*vs,*/ (req, res) => {
     const query = `SELECT * FROM Clients`;
 
     sqlc().query(query, (err, rows, fields) => {
@@ -28,7 +27,7 @@ router.get(
 // Get Client by id
 router.get(
   "/:id",
-  /*validateSession,*/ (req, res) => {
+  /*vs,*/ (req, res) => {
     const query = `SELECT * FROM Clients WHERE id=?`;
 
     sqlc().query(query, [req.params.id], (err, rows, fields) => {
@@ -52,7 +51,7 @@ router.get(
 // Create a Client
 router.post(
   "/create",
-  /* validateSession, */ (req, res) => {
+  /* vs, */ (req, res) => {
     const query = `INSERT INTO Clients (firstName, lastName) VALUES (?, ?)`;
 
     sqlc().query(
@@ -81,7 +80,7 @@ router.post(
 // Update a client
 router.put(
   "/:id",
-  /* validateSession, */ (req, res) => {
+  /* vs, */ (req, res) => {
     let query = `UPDATE Clients SET `;
     let insertedValues = [];
 
@@ -111,7 +110,7 @@ router.put(
 // Delete a Client
 router.delete(
   "/:id",
-  /* validateSession, */ (req, res) => {
+  /* vs, */ (req, res) => {
     const query = `DELETE FROM Clients WHERE id=?`;
 
     sqlc().query(query, [req.params.id], (err, results) => {
@@ -132,7 +131,7 @@ router.delete(
 // Client information by id
 router.get(
   "/information/:id",
-  /* validateSession, */ (req, res) => {
+  /* vs, */ (req, res) => {
     const query = `SELECT * FROM ClientInformation WHERE clientId=?`;
 
     sqlc().query(query, [req.params.id], (err, rows, fields) => {
@@ -153,7 +152,7 @@ router.get(
 // Create Client Information
 router.post(
   "/information/create/:id",
-  /* validateSession, */ (req, res) => {
+  /* vs, */ (req, res) => {
     const query = `INSERT INTO ClientInformation (address, city, state, zip, clientId) VALUES (?, ?, ?, ?, ?)`;
 
     sqlc().query(
@@ -191,7 +190,7 @@ router.post(
 // Update Client Information
 router.put(
   "/information/:id",
-  /* validateSession, */ (req, res) => {
+  /* vs, */ (req, res) => {
     const query = `UPDATE ClientInformation SET `;
     let insertedValues = [];
 
@@ -221,7 +220,7 @@ router.put(
 // Delete Client Information
 router.delete(
   "/information/:id",
-  /* validateSession */ (req, res) => {
+  /* vs */ (req, res) => {
     const query = `DELETE FROM ClientInformation WHERE clientId=?`;
 
     sqlc().query(query, [req.params.id], (err, results) => {
@@ -243,7 +242,7 @@ router.delete(
 // Get Client's Notes
 router.get(
   "/notes/:id",
-  /* validateSession */ (req, res) => {
+  /* vs */ (req, res) => {
     const query = `SELECT * FROM ClientNotes WHERE clientId=?`;
 
     sqlc().query(query, [req.params.id], (err, rows, fields) => {
@@ -262,7 +261,7 @@ router.get(
 // Create Client Notes
 router.post(
   "/notes/create/:id",
-  /* validateSession */ (req, res) => {
+  /* vs */ (req, res) => {
     const query = `INSERT INTO ClientNotes (description, clientId) VALUES (?, ?)`;
 
     sqlc().query(
@@ -291,7 +290,7 @@ router.post(
 // Update Client Notes
 router.put(
   "/notes/:id",
-  /* validateSession */ (req, res) => {
+  /* vs */ (req, res) => {
     const query = `UPDATE ClientNotes SET description=? WHERE clientId=?`;
 
     sqlc().query(
@@ -314,19 +313,17 @@ router.put(
 // Delete Client Notes
 router.delete(
   "/notes/:id",
-  /* validateSession */ (req, res) => {
+  /* vs */ (req, res) => {
     const query = `DELETE FROM ClientNotes WHERE clientId=?`;
 
     sqlc.query(query, [req.params.id], (err, results) => {
       if (err) {
         res.status(500).json({ message: "Error deleting client notes" });
       } else {
-        res
-          .status(200)
-          .json({
-            message: "Successfully deleted client notes",
-            results: results,
-          });
+        res.status(200).json({
+          message: "Successfully deleted client notes",
+          results: results,
+        });
       }
     });
   }
