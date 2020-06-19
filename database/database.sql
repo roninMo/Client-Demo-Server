@@ -15,11 +15,11 @@ DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Base Client Table
-CREATE TABLE insuranceDatabase.Client (
+CREATE TABLE insuranceDatabase.Clients (
 	id INT UNSIGNED auto_increment NOT NULL,
 	lastName varchar(100) NULL,
 	firstName varchar(100) NULL,
-	CONSTRAINT Client_PK PRIMARY KEY (id)
+	CONSTRAINT Clients_PK PRIMARY KEY (id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -34,7 +34,7 @@ CREATE TABLE insuranceDatabase.ClientInformation (
 	zip INT NULL,
 	clientId INT UNSIGNED NOT NULL,
 	CONSTRAINT ClientInformation_PK PRIMARY KEY (id),
-	CONSTRAINT ClientInformation_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Client(id)
+	CONSTRAINT ClientInformation_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -53,7 +53,7 @@ CREATE TABLE insuranceDatabase.Company (
 	policy varchar(100) NULL,
 	clientId INTEGER UNSIGNED NOT NULL,
 	CONSTRAINT Company_PK PRIMARY KEY (id),
-	CONSTRAINT Company_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Client(id)
+	CONSTRAINT Company_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -77,7 +77,7 @@ CREATE TABLE insuranceDatabase.BusinessBook (
 	clientId INT UNSIGNED NOT NULL,
 	companyId INT UNSIGNED NOT NULL,
 	CONSTRAINT BusinessBook_PK PRIMARY KEY (id),
-	CONSTRAINT BusinessBook_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Client(id),
+	CONSTRAINT BusinessBook_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id),
 	CONSTRAINT BusinessBook_FK_companyId FOREIGN KEY (companyId) REFERENCES insuranceDatabase.Company(id)
 )
 ENGINE=InnoDB
@@ -91,7 +91,7 @@ CREATE TABLE insuranceDatabase.ClientNotes (
 	description varchar(5200) NULL,
 	clientId INT UNSIGNED NOT NULL,
 	CONSTRAINT ClientNotes_PK PRIMARY KEY (id),
-	CONSTRAINT ClientNotes_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Client(id)
+	CONSTRAINT ClientNotes_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -115,7 +115,7 @@ CREATE TABLE insuranceDatabase.CommReport (
 	total DOUBLE NULL,
 	companyId INT UNSIGNED NOT NULL,
 	CONSTRAINT CommReport_PK PRIMARY KEY (id),
-	CONSTRAINT CommReport_FK_companyId FOREIGN KEY (companyId) REFERENCES insuranceDatabase.Client(id)
+	CONSTRAINT CommReport_FK_companyId FOREIGN KEY (companyId) REFERENCES insuranceDatabase.Clients(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -142,7 +142,7 @@ CREATE TABLE insuranceDatabase.CommByCompany (
 	`dec` DOUBLE NULL,
 	clientId INT UNSIGNED NOT NULL,
 	CONSTRAINT CommByCompany_PK PRIMARY KEY (id),
-	CONSTRAINT CommByCompany_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Client(id)
+	CONSTRAINT CommByCompany_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4

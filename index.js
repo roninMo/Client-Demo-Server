@@ -6,12 +6,6 @@ const sqlc = require("./db");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
-// Initial connection
-sqlc().connect(function (err) {
-  if (err) throw err;
-  console.log("You are now connected with mysql database...");
-});
-
 // to support JSON-encoded and URL-encoded bodies, and headers for handling requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,7 +13,7 @@ app.use(morgan("combined"));
 app.use(require("./middleware/headers"));
 
 // Start the server
-const server = app.listen(3306, "127.0.0.1", function () {
+const server = app.listen(3000, () => {
   const host = server.address().address;
   const port = server.address().port;
   console.log("Example app listening at http://%s:%s", host, port);
@@ -28,6 +22,16 @@ const server = app.listen(3306, "127.0.0.1", function () {
 app.use("/api/test", function (req, res) {
   res.send("This is data from the /api/test endpoint. It's from the server");
 });
+
+// Initial connection
+sqlc().connect((err) => {
+  if (!err) console.log("You are now connected with mysql database...");
+  else throw err;
+});
+
+/*******************************************
+ * End of main server stuff
+ *******************************************/
 
 /*****************
  * Controllers *
