@@ -194,14 +194,14 @@ router.put(
     const query = `UPDATE ClientInformation SET `;
     let insertedValues = [];
 
-    let bodyParams = [`address`, `city`, `state`, `zip`];
+    let bodyParams = [`address`, `city`, `state`, `zip`, `clientId`];
     for (let i = 0; i < 4; i++) {
       if (req.body[bodyParams[i]]) {
         insertedValues.push(req.body[bodyParams[i]]);
         query += `${bodyParams[i]}=?, `;
       }
     }
-    query = query.substr(0, query.length - 2) + ` WHERE clientId=?`;
+    query = query.substr(0, query.length - 2) + ` WHERE id=?`;
     insertedValues.push(req.params.id);
 
     sqlc().query(query, insertedValues, (err, results) => {
@@ -325,6 +325,86 @@ router.delete(
           results: results,
         });
       }
+    });
+  }
+);
+
+/****************************
+ * Book Of Business Data
+ ****************************/
+router.get(
+  "/all",
+  /*vs,*/ (req, res) => {
+    const query = `SELECT * FROM BusinessBook`;
+
+    sqlc().query(query, (err, rows, fields) => {
+      if (err)
+        res.status(500).json({ message: "Error querying business book data" });
+      else
+        res.status(200).json({
+          message: "Successfully queried business book data",
+          businessBook: rows,
+        });
+    });
+  }
+);
+
+// Get a client's book of business data
+router.get(
+  "/:id",
+  /*vs,*/ (req, res) => {
+    const query = `SELECT * FROM BusinessBook WHERE ClientId=?`;
+
+    sqlc().query(query, [req.params.id], (err, rows, fields) => {
+      if (err) res.status(500).json({ message: "Error querying client book" });
+      else
+        res.status(200).json({
+          message: "Successfully queried client book",
+          businessBook: rows,
+        });
+    });
+  }
+);
+
+// Edit a book of business
+router.put(
+  "/:id",
+  /*vs,*/ (req, res) => {
+    let query = `UPDATE BusinessBook SET `;
+    let insertedValues = [];
+
+    let bodyParams = [`address`, `city`, `state`, `zip`, `clientId`];
+    for (let i = 0; i < 4; i++) {
+      if (req.body[bodyParams[i]]) {
+        insertedValues.push(req.body[bodyParams[i]]);
+        query += `${bodyParams[i]}=?, `;
+      }
+    }
+    query = query.substr(0, query.length - 2) + ` WHERE id=?`;
+    insertedValues.push(req.params.id);
+
+    sqlc().query(query, insertedValues, (err, results) => {
+      if (err) res.status(500).json({ message: "Error updating book" });
+      else
+        res
+          .status(200)
+          .json({ message: "Successfully updated book", results: results });
+    });
+  }
+);
+
+// Delete a book of business
+router.delete(
+  "/:id",
+  /*vs,*/ (req, res) => {
+    const query = `DELETE FROM BusinessBook WHERE id=?`;
+
+    sqlc().query(query, (err, results) => {
+      if (err) res.status(500).json({ message: "Error deleting book" });
+      else
+        res
+          .status(200)
+          .json({ message: "Successfully deleted book", results: results });
     });
   }
 );

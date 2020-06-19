@@ -67,6 +67,7 @@ CREATE TABLE insuranceDatabase.BusinessBook (
 	appDate TIMESTAMP NULL,
 	`new` BOOL NULL,
 	effectDate TIMESTAMP NULL,
+	company varchar(100) NULL,
 	plan varchar(100) NULL,
 	`type` varchar(10) NULL,
 	policy varchar(100) NULL,
@@ -75,10 +76,10 @@ CREATE TABLE insuranceDatabase.BusinessBook (
 	commPD DOUBLE NULL,
 	datePD TIMESTAMP NULL,
 	clientId INT UNSIGNED NOT NULL,
-	companyId INT UNSIGNED NOT NULL,
+	-- companyId INT UNSIGNED NOT NULL,
 	CONSTRAINT BusinessBook_PK PRIMARY KEY (id),
 	CONSTRAINT BusinessBook_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id),
-	CONSTRAINT BusinessBook_FK_companyId FOREIGN KEY (companyId) REFERENCES insuranceDatabase.Company(id)
+	-- CONSTRAINT BusinessBook_FK_companyId FOREIGN KEY (companyId) REFERENCES insuranceDatabase.Company(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4

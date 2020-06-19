@@ -94,6 +94,7 @@ router.put(
       `appDate`,
       `effectDate`,
       `policy`,
+      `clientId`,
     ];
     for (let i = 0; i < 4; i++) {
       if (req.body[bodyParams[i]]) {
@@ -101,7 +102,7 @@ router.put(
         query += `${bodyParams[i]}=?, `;
       }
     }
-    query = query.substr(0, query.length - 2) + ` WHERE clientId=?`;
+    query = query.substr(0, query.length - 2) + ` WHERE id=?`;
     insertedValues.push(req.params.id);
 
     sqlc().query(query, insertedValues, (err, results) => {
@@ -109,7 +110,7 @@ router.put(
         res.status(500).json({ message: "Error updating company" });
       } else {
         res.status(200).json({
-          message: `Successfully updated company with an clientId of ${req.params.id}`,
+          message: `Successfully updated company`,
           results: results,
         });
       }
@@ -121,7 +122,7 @@ router.put(
 router.delete(
   "/:id",
   /*vs,*/ (req, res) => {
-    const query = `DELETE FROM Company WHERE clientId=?`;
+    const query = `DELETE FROM Company WHERE id=?`;
 
     sqlc.query(query, [req.params.id], (err, results) => {
       if (err) res.status(500).json({ message: "Error deleting company" });
