@@ -38,8 +38,8 @@ sqlc().connect((err) => {
  *****************/
 const users = require("./controllers/userController");
 const clients = require("./controllers/clientController");
-// const companies = require("./controllers/companyController");
-// const commissions = require("./controllers/commissionsController");
+const companies = require("./controllers/companyController");
+const commissions = require("./controllers/commissionsController");
 
 /********************
  * Exposed routes *
@@ -54,5 +54,5 @@ app.use("/users", users);
 
 // Now add the routes that will need authentication - reviews
 app.use("/clients", clients);
-// app.use("/companies", companies);
-// app.use("/commissions", commissions);
+app.use("/companies", companies);
+app.use("/commissions", commissions);
