@@ -41,7 +41,7 @@ router.get(
 
 // Create a Commission Report
 router.post(
-  "/reports/create/:id",
+  "/reports/create",
   /*vs,*/ (req, res) => {
     const query = `INSERT INTO CommReport (jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, total, companyId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -61,7 +61,7 @@ router.post(
         req.body.nov,
         req.body.dec,
         req.body.total,
-        req.params.id,
+        req.body.companyId,
       ],
       (err, results) => {
         if (err) res.status(500).json({ message: "Error creating CommReport" });
@@ -83,7 +83,7 @@ router.post(
               nov: req.body.nov,
               dec: req.body.dec,
               total: req.body.total,
-              companyId: req.params.id,
+              companyId: req.body.companyId,
             },
           });
       }
@@ -112,6 +112,7 @@ router.put(
       `nov`,
       `dec`,
       `total`,
+      `companyId`,
     ];
     for (let i = 0; i < 4; i++) {
       if (req.body[bodyParams[i]]) {
@@ -119,7 +120,7 @@ router.put(
         query += `${bodyParams[i]}=?, `;
       }
     }
-    query = query.substr(0, query.length - 2) + ` WHERE companyId=?`;
+    query = query.substr(0, query.length - 2) + ` WHERE id=?`;
     insertedValues.push(req.params.id);
 
     sqlc().query(query, insertedValues, (err, results) => {
@@ -127,7 +128,7 @@ router.put(
         res.status(500).json({ message: "Error updating commission report" });
       } else {
         res.status(200).json({
-          message: `Successfully updated Commission report with an companyId of ${req.params.id}`,
+          message: `Successfully updated Commission report`,
           results: results,
         });
       }
@@ -139,7 +140,7 @@ router.put(
 router.delete(
   "report/:id",
   /*vs,*/ (req, res) => {
-    let query = `DELETE FROM CommReport WHERE companyId=?`;
+    let query = `DELETE FROM CommReport WHERE id=?`;
 
     sqlc().query(query, [req.params.id], (err, results) => {
       if (err)
@@ -191,7 +192,7 @@ router.get(
 
 // Create a Commission
 router.post(
-  "/byCompany/create/:id",
+  "/byCompany/create",
   /*vs,*/ (req, res) => {
     const query = `INSERT INTO CommByCompany (commissionId, effectDate, type, jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec, clientId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -213,7 +214,7 @@ router.post(
         req.body.oct,
         req.body.nov,
         req.body.dec,
-        req.params.id,
+        req.body.clientId,
       ],
       (err, results) => {
         if (err) res.status(500).json({ message: "Error creating Commission" });
@@ -237,7 +238,7 @@ router.post(
               oct: req.body.oct,
               nov: req.body.nov,
               dec: req.body.dec,
-              clientId: req.params.id,
+              clientId: req.body.clientId,
             },
           });
       }
@@ -276,7 +277,7 @@ router.put(
         query += `${bodyParams[i]}=?, `;
       }
     }
-    query = query.substr(0, query.length - 2) + ` WHERE clientId=?`;
+    query = query.substr(0, query.length - 2) + `clientId  WHERE id=?`;
     insertedValues.push(req.params.id);
 
     sqlc().query(query, insertedValues, (err, results) => {
@@ -284,7 +285,7 @@ router.put(
         res.status(500).json({ message: "Error updating commission" });
       } else {
         res.status(200).json({
-          message: `Successfully updated Commission with an clientId of ${req.params.id}`,
+          message: `Successfully updated Commission`,
           results: results,
         });
       }
@@ -296,7 +297,7 @@ router.put(
 router.delete(
   "byCompany/:id",
   /*vs,*/ (req, res) => {
-    let query = `DELETE FROM CommReport WHERE clientId=?`;
+    let query = `DELETE FROM CommReport WHERE id=?`;
 
     sqlc().query(query, [req.params.id], (err, results) => {
       if (err)
