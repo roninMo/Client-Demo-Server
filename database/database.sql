@@ -19,22 +19,23 @@ CREATE TABLE insuranceDatabase.Clients (
 	id INT UNSIGNED auto_increment NOT NULL,
 	lastName varchar(100) NULL,
 	firstName varchar(100) NULL,
-	CONSTRAINT Clients_PK PRIMARY KEY (id)
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COLLATE=utf8mb4_0900_ai_ci;
-
--- Client Information Table
-CREATE TABLE insuranceDatabase.ClientInformation (
-	id INT UNSIGNED auto_increment NOT NULL,
 	address varchar(255) NULL,
 	city varchar(100) NULL,
 	state varchar(2) NULL,
 	zip INT NULL,
-	clientId INT UNSIGNED NOT NULL,
-	CONSTRAINT ClientInformation_PK PRIMARY KEY (id),
-	CONSTRAINT ClientInformation_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id)
+	dob TIMESTAMP NULL,
+	appDate TIMESTAMP NULL,
+	`new` BOOL NULL,
+	effectDate TIMESTAMP NULL,
+	company varchar(100) NULL,
+	plan varchar(100) NULL,
+	`type` varchar(10) NULL,
+	policy varchar(100) NULL,
+	prem DOUBLE NULL,
+	mode varchar(10) NULL,
+	commPD DOUBLE NULL,
+	datePD TIMESTAMP NULL,
+	CONSTRAINT Clients_PK PRIMARY KEY (id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -54,32 +55,6 @@ CREATE TABLE insuranceDatabase.Company (
 	clientId INTEGER UNSIGNED NOT NULL,
 	CONSTRAINT Company_PK PRIMARY KEY (id),
 	CONSTRAINT Company_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id)
-)
-ENGINE=InnoDB
-DEFAULT CHARSET=utf8mb4
-COLLATE=utf8mb4_0900_ai_ci;
-
-
--- Business Book Table
-CREATE TABLE insuranceDatabase.BusinessBook (
-	id INT UNSIGNED auto_increment NOT NULL,
-	dob TIMESTAMP NULL,
-	appDate TIMESTAMP NULL,
-	`new` BOOL NULL,
-	effectDate TIMESTAMP NULL,
-	company varchar(100) NULL,
-	plan varchar(100) NULL,
-	`type` varchar(10) NULL,
-	policy varchar(100) NULL,
-	prem DOUBLE NULL,
-	mode varchar(10) NULL,
-	commPD DOUBLE NULL,
-	datePD TIMESTAMP NULL,
-	clientId INT UNSIGNED NOT NULL,
-	-- companyId INT UNSIGNED NOT NULL,
-	CONSTRAINT BusinessBook_PK PRIMARY KEY (id),
-	CONSTRAINT BusinessBook_FK_clientId FOREIGN KEY (clientId) REFERENCES insuranceDatabase.Clients(id),
-	-- CONSTRAINT BusinessBook_FK_companyId FOREIGN KEY (companyId) REFERENCES insuranceDatabase.Company(id)
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
