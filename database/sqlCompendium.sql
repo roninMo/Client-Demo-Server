@@ -387,8 +387,80 @@ JOIN reviews
 GROUP BY series.id 
 ORDER BY avg_rating ASC;
 
+SELECT
+    title,
+    genre,
+    ROUND(AVG(rating), 2) AS avg_rating
+FROM series
+INNER JOIN reviews ON series.id = reviews.series_id
+GROUP BY genre
+ORDER BY avg_rating ASC;
+
+SELECT
+    title,
+    genre,
+    COUNT(rating)
+    IFNULL(MIN(rating), 0) AS Min,
+    IFNULL(MAX(rating), 0) AS Max,
+    ROUND(IFNULL(AVG(rating), 0), 2) AS Avg,
+    IF(COUNT(rating) >= 1, 'ACTIVE', 'INACTIVE') AS STATUS
+FROM series
+LEFT JOIN reviews ON series.id = reviews.series_id
+GROUP BY last_name, first_name
+ORDER BY Avg DESC;
 
 
+/*****************************
+ * Delimeters
+*****************************/
+-- If the user being added is under 18 the database trigger will stop the insert
+DELIMITER $$
+
+CREATE TRIGGER must_be_adult
+    BEFORE INSERT ON users FOR EACH ROW
+    BEGIN
+        IF NEW.age < 18
+        THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Must be an adult';
+        END IF;
+    END;
+$$
+
+DELIMITER;
+
+-- If the follower_id is equal to the followee_id 
+DELIMITER $$
+
+CREATE TRIGGER prevent_self_follow
+    BEFORE INSERT ON follows FOR EACH ROW
+    BEGIN
+        IF NEW.follower_id = NEW.followee_id
+        THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'You cannot follow yourself';
+        END IF;
+    END;
+$$
+
+DELIMITER;
+
+-- Insert into unfollow table after a user unfollows another user
+DELIMITER $$
+
+CREATE TRIGGER capture_unfollow
+    AFTER DELETE ON follows FOR EACH ROW
+    BEGIN
+        -- INSERT INTO unfollows(follower_id, followee_id) 
+        -- VALUES (OLD.follower_id, OLD.followee_id)
+        INSERT INTO unfollows
+        SET follower_id = OLD.follower_id
+            followee_id = OLD.followee_id;
+    END;
+$$
+
+DELIMITER;
+-- We could create an archived client section with this for if they ever delete users from the database
 
 /*****************************
  * Data Type Notes
