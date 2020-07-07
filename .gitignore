@@ -1,4 +1,8 @@
 .env
-
 package-lock.json
 node_modules
+
+database/sqlCompendium.sql
+
+.DS_Store
+database/.DS_Store
