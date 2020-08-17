@@ -117,52 +117,7 @@ COLLATE=utf8mb4_0900_ai_ci;
 
 
 
-
-
-
-CREATE TABLE people (
-	id INT UNSIGNED auto_increment NOT NULL,
-	firstName varchar(100) NOT NULL,
-	lastName varchar(100) NOT NULL,
-	email varchar(100),
-	hobby varchar(100),
-	CONSTRAINT people_PK PRIMARY KEY (id)
-)
-
-CREATE TABLE places (
-	id INT UNSIGNED auto_increment NOT NULL,
-	place varchar(100),
-	state varchar(100),
-	CONSTRAINT places_PK PRIMARY KEY (id)
-)
-
-INSERT INTO people (firstName, lastName, email, hobby)
-VALUES	
-	('Ben', 'Wary', 'scrutinybaby@gmail.com', 'chips, pennies, napkins'),
-	('Jerry', 'Terry', 'sweetboy11@gmail.com', 'space'),
-	('Harry', 'Baldwin', 'hypervigilance@yahoo.com', 'sports'),
-	('Jeffery', 'Dallas', 'bmobro@gmail.com', 'go out on adventures'),
-	('Madison', 'Batman', 'hahehaheha@somemail.com', 'fishing'),
-	('Jamie', 'Sanders', 'goofygoober@heehaw.com', 'cars'),
-	('Kyler', 'Hyuga', 'alwaysWatchingWazowski@dumbledonk.com', 'pokemon in yu gi oh'),
-	('Hagred', 'KaminaElectra', 'caretakerdogbarker@gmail.com', 'indubitably');
-
-INSERT INTO places (place, state)
-VALUES
-	('Some silly park', 'Wyoming'),
-	('Salty Spitoon', 'Bikini Bottom'),
-	('Mount Miyoboku', 'Somewhere');
-
-SELECT * FROM people WHERE CONCAT(firstName, ' ', lastName) LIKE '%Ben%';
-
-SELECT id, CONCAT(firstName,' ',lastName) AS name 
-FROM people WHERE CONCAT(firstName,' ',lastName) LIKE '%Ben%'
-UNION
-SELECT id, place
-FROM places;
-
-
-/* Insurance Database jazz */
+/* Insurance Database queries */
 
 -- Find all companies/people where the name is what the user searched
 SELECT id, CONCAT(firstName,' ',lastName) AS name
