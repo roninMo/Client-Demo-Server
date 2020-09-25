@@ -14,7 +14,7 @@ CREATE TABLE insuranceDatabase.Clients (
 	address varchar(255) NULL,
 	city varchar(100) NULL,
 	state CHAR(2) NULL,
-	zip INT UNSIGNED NULL,
+	zip CHAR(5) NULL,
 	county varchar(100) NULL,
 	smoker BOOL NULL,
 	hbp BOOL NULL,
@@ -51,9 +51,8 @@ COLLATE=utf8mb4_0900_ai_ci;
 -- Commissions Table
 CREATE TABLE insuranceDatabase.Commissions (
 	id INT UNSIGNED auto_increment NOT NULL,
-	appDate DATE NOT NULL,
-	effectDate DATE NULL,
-	medicarePlan varchar(100) NULL,
+	appDate DATETIME NULL,
+	effectDate DATETIME NULL,
 	`type` varchar(25) NULL,
 	policy varchar(100) NULL,
 	jan DECIMAL(14,4) NULL,
@@ -67,7 +66,7 @@ CREATE TABLE insuranceDatabase.Commissions (
 	sep DECIMAL(14,4) NULL,
 	oct DECIMAL(14,4) NULL,
 	nov DECIMAL(14,4) NULL,
-	`dec` DECIMAL(14,4) NULL,
+	dece DECIMAL(14,4) NULL,
 	notes varchar(550) NULL,
 	clientId INT UNSIGNED NOT NULL,
 	companyId INT UNSIGNED NOT NULL,
@@ -118,6 +117,45 @@ COLLATE=utf8mb4_0900_ai_ci;
 
 
 /* Insurance Database queries */
+/* Insurance Database Tables */
+-- Users
+	-- Clients
+		-- ClientNotes
+	-- Commissions
+	-- Companies
+
+
+/* -- todo
+A Search Bar to search for clients and companies
+
+List of specific data queried by most recent
+	-- Book of business page
+	-- Master Mailing List
+
+Clients page
+	-- Since this is like a table, a section for order by, kind of like a folder functionality, understand that then create queries for it
+
+Commissions pages
+	-- Commissions by Company
+	-- Commissions report
+	-- Payment statistics (Current payments/month, payment adjustments/month, total payments (current)/month, total payments(due per year)/month)
+Users page
+
+*/
+
+
+-- Todo queries for insurance database --
+/* 
+We need the basics, grabbing individual values by id, as well as searches for each
+When I do a search, I want the results to show for clients, companies, and commissions as well, so we're going to query for that
+
+Then we have our many to many joint table to grab all the instances for that specific user
+
+So we search for a user, company, or commission, then have another query that joins all the data connected to that specific selection
+	a table that grabs all that data for each
+	all user's transactions tied to commissions and companies, companies tied to users and commission, etc.
+
+*/
 
 -- Find all companies/people where the name is what the user searched
 SELECT id, CONCAT(firstName,' ',lastName) AS name
@@ -158,3 +196,11 @@ INNER JOIN Companies
 	ON Commissions.companyId = Companies.id
 ORDER BY Commissions.appDate DESC;
 
+
+-- Todo for our insurance database
+-- Create the queries for each of the routes
+-- Take out the old routes, and put new ones in with the queries
+-- Continue working on the front end of the application
+
+
+INSERT INTO Commissions (appDate, effectDate, type, policy, jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dece, notes, clientId, companyId) VALUES ('2007-09-06 14:06:00', '2018-11-10 16:17:49', 'MAPD', 'Policy # 0', 6625.2354, 9243.1205, 3864.8893, 4764.5735, 5181.5517, 5778.2298, 9319.5772, 8189.2849, 3406.8834, 7462.4458, 9563.681, 6795.8139, 'Commission note G', 34, 10);

@@ -1,5 +1,5 @@
 To create a docker mysql instance
-    - docker run -d -p 3306:3306 — name=insurance-mysql  — env=”MYSQL_ROOT_PASSWORD=Kieran30437" mysql
+    - docker run -d -p 3306:3306 — name=insurance-mysql — env=”MYSQL_ROOT_PASSWORD=Kieran30437" mysql
 
 Function to start all my exited docker containers
     - docker start $(docker ps -a -q --filter "status=exited");   
